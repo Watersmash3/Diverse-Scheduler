@@ -1,7 +1,7 @@
 # Diverse-Scheduler
 This is an app designed to fullfill the scheduling needs of companies and people who need to schedule many people at many different places. Additionally, each place has unique requirements for those who work there. Furthermore, achieves hard and soft constraints set by the user.
 
-# Paramaters / Brainstorming
+# Parameters / Brainstorming
 
 ## Guards
 + Hard Limits
@@ -22,6 +22,11 @@ This is an app designed to fullfill the scheduling needs of companies and people
   + Distance from home
   + Preferred working shift
   + Number of days spent working per week
++ Other Information
+  + Place of Residence
+  + Date Employed
+  + Name
+  + Age
 
 ## Locations
 + Hours of operation
@@ -30,5 +35,3 @@ This is an app designed to fullfill the scheduling needs of companies and people
   + Certification requirements
   + Start Time
   + End Time
-    
-  
