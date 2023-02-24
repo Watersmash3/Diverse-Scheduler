@@ -9,12 +9,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -48,12 +51,21 @@ public class employeeDatabaseController implements Initializable {
     private Label idLabel;
     @FXML
     private Label nameLabel;
+    private Stage secondaryStage;
+    private employeeModificationController secondaryController;
+    private Pane mainPane;
+
+    private GuardModel selectedGuard;
 
     public void select() {
-        GuardModel guardModel = tableData.getSelectionModel().getSelectedItem();
-        idLabel.setText("ID: " + guardModel.getIdNumber());
-        nameLabel.setText("Name: " + guardModel.getName());
+        try {
+            GuardModel guardModel = tableData.getSelectionModel().getSelectedItem();
+            idLabel.setText("ID: " + guardModel.getIdNumber());
+            nameLabel.setText("Name: " + guardModel.getName());
+            selectedGuard = guardModel;
+        } catch (NullPointerException e) {
 
+        }
     }
 
     /**
@@ -61,7 +73,7 @@ public class employeeDatabaseController implements Initializable {
      * which holds all guard information
      * @return Observable List of Guards
      */
-    public ObservableList<GuardModel> load() {
+    public void load() {
         ObservableList<GuardModel> guardsModel = FXCollections.observableArrayList();
         File file = new File("Data/Guards");
         File[] dir = file.listFiles();
@@ -82,6 +94,11 @@ public class employeeDatabaseController implements Initializable {
                             guardProps.getProperty("location")
                             );
                     guardsModel.add(g);
+                    if (selectedGuard == null) {
+                        idLabel.setText("ID: " + g.getIdNumber());
+                        nameLabel.setText("Name: " + g.getName());
+                        selectedGuard = g;
+                    }
                 }
             }
         } catch (FileNotFoundException e) {
@@ -92,7 +109,7 @@ public class employeeDatabaseController implements Initializable {
             // TODO
         }
 
-        return guardsModel;
+        tableData.setItems(guardsModel);
     }
 
     /**
@@ -113,6 +130,95 @@ public class employeeDatabaseController implements Initializable {
         fullScreener.setCellValueFactory(new PropertyValueFactory<>("FullScreener"));
         location.setCellValueFactory(new PropertyValueFactory<>("Location"));
 
-        tableData.setItems(load());
+        this.load();
+    }
+
+    /**
+     * Getter for the selected guard
+     * @return the selected guard
+     */
+    public GuardModel getSelectedGuard() {
+        return this.selectedGuard;
+    }
+
+    public void setSelectedGuard(GuardModel selectedGuard) {
+        this.selectedGuard = selectedGuard;
+    }
+
+    public GuardModel parseGuardModel(File file) {
+        GuardModel g = null;
+        try {
+            Properties guardProps = new Properties();
+            guardProps.load(new FileInputStream(file));
+            g = new GuardModel(Integer.parseInt(guardProps.getProperty("idNumber")),
+                    guardProps.getProperty("name"),
+                    Integer.parseInt(guardProps.getProperty("age")),
+                    guardProps.getProperty("dateEmployed"),
+                    Boolean.valueOf(guardProps.getProperty("basicClearance")),
+                    Boolean.valueOf(guardProps.getProperty("topSecretClearance")),
+                    Boolean.valueOf(guardProps.getProperty("nonScreener")),
+                    Boolean.valueOf(guardProps.getProperty("handWander")),
+                    Boolean.valueOf(guardProps.getProperty("fullScreener")),
+                    guardProps.getProperty("location")
+            );
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+
+        }
+        return g;
+    }
+
+    public void modify() {
+        if (secondaryStage.isShowing()) {
+            secondaryStage.hide();
+        } else {
+            secondaryStage.show();
+            secondaryController.load(this.selectedGuard);
+        }
+    }
+
+    public void remove() {
+        File file = new File("Data/Guards");
+        File[] dir = file.listFiles();
+        try {
+            if (dir != null) {
+                for (File guardFile : dir) {
+                    Properties guardProps = new Properties();
+                    try (FileInputStream in = new FileInputStream(guardFile)) {
+                        guardProps.load(in);
+                    }
+                    if (Integer.parseInt(guardProps.getProperty("idNumber")) == this.selectedGuard.getIdNumber()) {
+                        file = guardFile;
+                    }
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error1");
+            // TODO
+        } catch (IOException e) {
+            System.out.println("Error");
+            // TODO
+        }
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.load();
+    }
+
+    public void setMainGrid(Pane root) {
+        this.mainPane = root;
+    }
+
+    public void setOtherStage(Stage secondaryStage) {
+        this.secondaryStage = secondaryStage;
+    }
+
+
+    public void setOtherController(employeeModificationController employeeModificationController) {
+        this.secondaryController = employeeModificationController;
     }
 }
