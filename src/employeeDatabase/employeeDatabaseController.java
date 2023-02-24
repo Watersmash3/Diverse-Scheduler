@@ -57,6 +57,9 @@ public class employeeDatabaseController implements Initializable {
 
     private GuardModel selectedGuard;
 
+    /**
+     * Selects the guard from the table data
+     */
     public void select() {
         try {
             GuardModel guardModel = tableData.getSelectionModel().getSelectedItem();
@@ -141,10 +144,19 @@ public class employeeDatabaseController implements Initializable {
         return this.selectedGuard;
     }
 
+    /**
+     * Sets the selectedGuard variable to the passed in guard
+     * @param selectedGuard the passed in guard
+     */
     public void setSelectedGuard(GuardModel selectedGuard) {
         this.selectedGuard = selectedGuard;
     }
 
+    /**
+     * Takes a file and returns a guardModel from the file
+     * @param file the passed in properties file containing the guard data
+     * @return the guardModel from the file
+     */
     public GuardModel parseGuardModel(File file) {
         GuardModel g = null;
         try {
@@ -178,6 +190,9 @@ public class employeeDatabaseController implements Initializable {
         }
     }
 
+    /**
+     * Removes and Deletes the selected file
+     */
     public void remove() {
         File file = new File("Data/Guards");
         File[] dir = file.listFiles();
@@ -209,15 +224,26 @@ public class employeeDatabaseController implements Initializable {
         this.load();
     }
 
+    /**
+     * Sets the main pane of the program
+     * @param root the passed in pane
+     */
     public void setMainGrid(Pane root) {
         this.mainPane = root;
     }
 
+    /**
+     * Setter of the secondary Stage
+     * @param secondaryStage the passed in stage
+     */
     public void setOtherStage(Stage secondaryStage) {
         this.secondaryStage = secondaryStage;
     }
 
-
+    /**
+     * Setter of the other controller
+     * @param employeeModificationController the passed in controller
+     */
     public void setOtherController(employeeModificationController employeeModificationController) {
         this.secondaryController = employeeModificationController;
     }

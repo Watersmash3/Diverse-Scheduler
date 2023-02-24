@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.Properties;
 
+/**
+ * The employee modification controller
+ */
 public class employeeModificationController {
     @FXML
     private Label guardID;
@@ -55,6 +58,9 @@ public class employeeModificationController {
     private employeeDatabaseController primaryController;
     private GuardModel selectedGuard;
 
+    /**
+     * The apply method, which takes the data from the different fields and sets them to the file
+     */
     public void apply() {
         File file = new File("Data/Guards");
         File[] dir = file.listFiles();
@@ -95,10 +101,17 @@ public class employeeModificationController {
         this.load(primaryController.parseGuardModel(file));
     }
 
+    /**
+     * Closes the modification window
+     */
     public void cancel() {
         primaryController.modify();
     }
 
+    /**
+     * Takes the passed in guardModel and sets all the pertinent data of the modifier window
+     * @param guardModel the passed in guardModel
+     */
     public void load(GuardModel guardModel) {
         guardID.setText(String.valueOf(guardModel.getIdNumber()));
         guardIDField.setText(String.valueOf(guardModel.getIdNumber()));
@@ -123,10 +136,18 @@ public class employeeModificationController {
         this.selectedGuard = guardModel;
     }
 
+    /**
+     * Setter of the primary Stage
+     * @param primaryStage the passed in stage
+     */
     public void setMainStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
+    /**
+     * Setter of the primary Controller
+     * @param employeeDatabaseController the passed in controller
+     */
     public void setMainController(employeeDatabaseController employeeDatabaseController) {
         this.primaryController = employeeDatabaseController;
     }
