@@ -152,6 +152,15 @@ public class employeeDatabaseController implements Initializable {
         this.selectedGuard = selectedGuard;
     }
 
+    public void addGuard() {
+        secondaryController.changeState();
+        if (secondaryStage.isShowing()) {
+            secondaryStage.hide();
+        } else {
+            secondaryStage.show();
+        }
+    }
+
     /**
      * Takes a file and returns a guardModel from the file
      * @param file the passed in properties file containing the guard data
@@ -182,12 +191,23 @@ public class employeeDatabaseController implements Initializable {
     }
 
     public void modify() {
-        if (secondaryStage.isShowing()) {
-            secondaryStage.hide();
+        if (!secondaryController.getState().equals("modify")) {
+            secondaryController.changeState();
+            if (secondaryStage.isShowing()) {
+                secondaryStage.hide();
+            } else {
+                secondaryStage.show();
+                secondaryController.load(this.selectedGuard);
+            }
         } else {
-            secondaryStage.show();
-            secondaryController.load(this.selectedGuard);
+            if (secondaryStage.isShowing()) {
+                secondaryStage.hide();
+            } else {
+                secondaryStage.show();
+                secondaryController.load(this.selectedGuard);
+            }
         }
+
     }
 
     /**

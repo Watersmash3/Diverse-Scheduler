@@ -1,6 +1,7 @@
 package employeeDatabase;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -53,35 +54,43 @@ public class employeeModificationController {
     private Label guardLocation;
     @FXML
     private TextField guardLocationField;
+    @FXML
+    private Button applyButton;
 
     private Stage primaryStage;
     private employeeDatabaseController primaryController;
     private GuardModel selectedGuard;
+    private String state = "modify";
 
     /**
      * The apply method, which takes the data from the different fields and sets them to the file
      */
     public void apply() {
-        File file = new File("Data/Guards");
-        File[] dir = file.listFiles();
-        try {
-            if (dir != null) {
-                for (File guardFile : dir) {
-                    Properties guardProps = new Properties();
-                    guardProps.load(new FileInputStream(guardFile));
-                    if (Integer.parseInt(guardProps.getProperty("idNumber")) == this.selectedGuard.getIdNumber()) {
-                        file = guardFile;
+        File file = null;
+        if (state.equals("modify")) {
+            file = new File("Data/Guards");
+            File[] dir = file.listFiles();
+            try {
+                if (dir != null) {
+                    for (File guardFile : dir) {
+                        Properties guardProps = new Properties();
+                        guardProps.load(new FileInputStream(guardFile));
+                        if (Integer.parseInt(guardProps.getProperty("idNumber")) == this.selectedGuard.getIdNumber()) {
+                            file = guardFile;
+                        }
                     }
                 }
+            } catch (FileNotFoundException e) {
+                System.out.println("Error");
+                // TODO
+            } catch (IOException e) {
+                System.out.println("Error");
+                // TODO
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error");
-            // TODO
-        } catch (IOException e) {
-            System.out.println("Error");
-            // TODO
+        } else {
+            String str = String.valueOf(this.guardNameField.getText());
+            file = new File("Data/Guards/" +  str.replaceAll(" ", "_").toLowerCase() + ".properties");
         }
-
         try (PrintWriter out = new PrintWriter(file)) {
             out.print("idNumber=" + this.guardIDField.getText() + "\n");
             out.print("name=" + this.guardNameField.getText() + "\n");
@@ -136,6 +145,36 @@ public class employeeModificationController {
         this.selectedGuard = guardModel;
     }
 
+    public void changeState() {
+        if (state.equals("modify")) {
+            guardID.setVisible(false);
+            guardName.setVisible(false);
+            guardAge.setVisible(false);
+            guardStartDate.setVisible(false);
+            guardBasic.setVisible(false);
+            guardTopSecret.setVisible(false);
+            guardNonScreener.setVisible(false);
+            guardHandWander.setVisible(false);
+            guardFullScreener.setVisible(false);
+            guardLocation.setVisible(false);
+            applyButton.setText("Add Guard");
+            state = "add";
+        } else {
+            guardID.setVisible(true);
+            guardName.setVisible(true);
+            guardAge.setVisible(true);
+            guardStartDate.setVisible(true);
+            guardBasic.setVisible(true);
+            guardTopSecret.setVisible(true);
+            guardNonScreener.setVisible(true);
+            guardHandWander.setVisible(true);
+            guardFullScreener.setVisible(true);
+            guardLocation.setVisible(true);
+            applyButton.setText("Update Guard");
+            state = "modify";
+        }
+    }
+
     /**
      * Setter of the primary Stage
      * @param primaryStage the passed in stage
@@ -150,5 +189,9 @@ public class employeeModificationController {
      */
     public void setMainController(employeeDatabaseController employeeDatabaseController) {
         this.primaryController = employeeDatabaseController;
+    }
+
+    public String getState() {
+        return this.state;
     }
 }
