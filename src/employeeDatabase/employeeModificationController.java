@@ -145,6 +145,9 @@ public class employeeModificationController {
         this.selectedGuard = guardModel;
     }
 
+    /**
+     * Changes the state and sets the proper visibilities
+     */
     public void changeState() {
         if (state.equals("modify")) {
             guardID.setVisible(false);
@@ -191,6 +194,10 @@ public class employeeModificationController {
         this.primaryController = employeeDatabaseController;
     }
 
+    /**
+     * Returns the state of the controller
+     * @return the current state
+     */
     public String getState() {
         return this.state;
     }

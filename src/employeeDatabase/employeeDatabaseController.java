@@ -190,6 +190,9 @@ public class employeeDatabaseController implements Initializable {
         return g;
     }
 
+    /**
+     * The opener for the modify method to change data
+     */
     public void modify() {
         if (!secondaryController.getState().equals("modify")) {
             secondaryController.changeState();
