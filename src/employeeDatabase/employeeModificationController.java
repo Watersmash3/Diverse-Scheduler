@@ -90,6 +90,7 @@ public class employeeModificationController {
         } else {
             String str = String.valueOf(this.guardNameField.getText());
             file = new File("Data/Guards/" +  str.replaceAll(" ", "_").toLowerCase() + ".properties");
+            primaryController.hideModifier();
         }
         try (PrintWriter out = new PrintWriter(file)) {
             out.print("idNumber=" + this.guardIDField.getText() + "\n");
@@ -200,5 +201,18 @@ public class employeeModificationController {
      */
     public String getState() {
         return this.state;
+    }
+
+    public void clearFields() {
+        guardIDField.setText("");
+        guardNameField.setText("");
+        guardAgeField.setText("");
+        guardStartDateField.setText("");
+        guardBasicField.setSelected(false);
+        guardTopSecretField.setSelected(false);
+        guardNonScreenerField.setSelected(false);
+        guardHandWanderField.setSelected(false);
+        guardFullScreenerField.setSelected(false);
+        guardLocationField.setText("");
     }
 }

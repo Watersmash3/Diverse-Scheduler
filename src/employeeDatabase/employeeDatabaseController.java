@@ -159,6 +159,7 @@ public class employeeDatabaseController implements Initializable {
         } else {
             secondaryStage.show();
         }
+        secondaryController.clearFields();
     }
 
     /**
@@ -241,6 +242,7 @@ public class employeeDatabaseController implements Initializable {
         }
         try {
             Files.delete(file.toPath());
+            this.selectedGuard = null;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -269,5 +271,9 @@ public class employeeDatabaseController implements Initializable {
      */
     public void setOtherController(employeeModificationController employeeModificationController) {
         this.secondaryController = employeeModificationController;
+    }
+
+    public void hideModifier() {
+        secondaryStage.hide();
     }
 }
