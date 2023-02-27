@@ -1,16 +1,17 @@
 package employeeDatabase;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,140 +19,80 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The Controller for the employee database
  */
 public class employeeDatabaseController implements Initializable {
-    @FXML
-    private TableView<GuardModel> tableData;
-    @FXML
-    private TableColumn<GuardModel, Integer> idNumber;
-    @FXML
-    private TableColumn<GuardModel, String> name;
-    @FXML
-    private TableColumn<GuardModel, Integer> age;
-    @FXML
-    private TableColumn<GuardModel, String> dateEmployed;
-    @FXML
-    private TableColumn<GuardModel, Boolean> basicClearance;
-    @FXML
-    private TableColumn<GuardModel, Boolean> topSecretClearance;
-    @FXML
-    private TableColumn<GuardModel, Boolean> nonScreener;
-    @FXML
-    private TableColumn<GuardModel, Boolean> handWander;
-    @FXML
-    private TableColumn<GuardModel, Boolean> fullScreener;
-    @FXML
-    private TableColumn<GuardModel, String> location;
-    @FXML
-    private Label idLabel;
-    @FXML
-    private Label nameLabel;
+
+    // FXML Elements
+    @FXML private TableView<GuardModel> guardTableData;
+    @FXML private TableColumn<GuardModel, Integer> guardIdNumberCol;
+    @FXML private TableColumn<GuardModel, String> guardNameCol;
+    @FXML private TableColumn<GuardModel, Integer> guardAgeCol;
+    @FXML private TableColumn<GuardModel, String> guardDateEmployedCol;
+    @FXML private TableColumn<GuardModel, Boolean> guardBasicClearanceCol;
+    @FXML private TableColumn<GuardModel, Boolean> guardTopSecretClearanceCol;
+    @FXML private TableColumn<GuardModel, Boolean> guardNonScreenerCol;
+    @FXML private TableColumn<GuardModel, Boolean> guardHandWanderCol;
+    @FXML private TableColumn<GuardModel, Boolean> guardFullScreenerCol;
+    @FXML private TableColumn<GuardModel, String> guardLocationCol;
+    @FXML private Label selectedGuardIdLabel;
+    @FXML private Label selectedGuardNameLabel;
+
+    // Secondary Stage / Modifier Elements
     private Stage secondaryStage;
     private employeeModificationController secondaryController;
     private Pane mainPane;
 
+    // Instance Variables
     private GuardModel selectedGuard;
 
     /**
-     * Selects the guard from the table data
+     * This method indexes the guardTableData for the current selected cell and sets the respective
+     * labels to the selected guard's data. Additionally, it sets the selected guard to the
+     * one indexed.
      */
     public void select() {
-        try {
-            GuardModel guardModel = tableData.getSelectionModel().getSelectedItem();
-            idLabel.setText("ID: " + guardModel.getIdNumber());
-            nameLabel.setText("Name: " + guardModel.getName());
-            selectedGuard = guardModel;
-        } catch (NullPointerException e) {
-
+        GuardModel currentGuard = guardTableData.getSelectionModel().getSelectedItem();
+        if (currentGuard != null) {
+            selectedGuardIdLabel.setText("Guard ID: " + currentGuard.getIdNumber());
+            selectedGuardNameLabel.setText("Guard Name: " + currentGuard.getName());
+            this.selectedGuard = currentGuard;
+        } else {
+            this.createTimedAlert("Invalid Selection", "Please select a valid entry", 3.0);
         }
     }
 
     /**
-     * Helper method to load all the guards into an observable list from the guards folder
-     * which holds all guard information
-     * @return Observable List of Guards
+     * This method handles the loading of the data and setting the data loaded from the files and
+     * setting the data to the table.
      */
     public void load() {
-        ObservableList<GuardModel> guardsModel = FXCollections.observableArrayList();
         File file = new File("Data/Guards");
         File[] dir = file.listFiles();
-        try {
-            if (dir != null) {
-                for (File guardFile : dir) {
-                    Properties guardProps = new Properties();
-                    guardProps.load(new FileInputStream(guardFile));
-                    GuardModel g = new GuardModel(Integer.parseInt(guardProps.getProperty("idNumber")),
-                            guardProps.getProperty("name"),
-                            Integer.parseInt(guardProps.getProperty("age")),
-                            guardProps.getProperty("dateEmployed"),
-                            Boolean.valueOf(guardProps.getProperty("basicClearance")),
-                            Boolean.valueOf(guardProps.getProperty("topSecretClearance")),
-                            Boolean.valueOf(guardProps.getProperty("nonScreener")),
-                            Boolean.valueOf(guardProps.getProperty("handWander")),
-                            Boolean.valueOf(guardProps.getProperty("fullScreener")),
-                            guardProps.getProperty("location")
-                            );
-                    guardsModel.add(g);
-                    if (selectedGuard == null) {
-                        idLabel.setText("ID: " + g.getIdNumber());
-                        nameLabel.setText("Name: " + g.getName());
-                        selectedGuard = g;
-                    }
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error");
-            // TODO
-        } catch (IOException e) {
-            System.out.println("Error");
-            // TODO
+        if (dir != null) {
+            ObservableList<GuardModel> guardModels = Arrays.stream(dir)
+                    .filter(File::isFile)
+                    .map(this::parseGuardModel)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+           if (!guardModels.isEmpty()) {
+               GuardModel selectedGuard = guardModels.get(0);
+               selectedGuardIdLabel.setText("ID: " + selectedGuard.getIdNumber());
+               selectedGuardNameLabel.setText("Name: " + selectedGuard.getName());
+           }
+           guardTableData.setItems(guardModels);
+           selectedGuard = guardModels.get(0);
         }
-
-        tableData.setItems(guardsModel);
     }
 
     /**
-     * Initializes the Cell Values for the table and sets the data of the table.
-     * @param url Defualt passed in URL
-     * @param resourceBundle passed in resourceBundle
+     * This method handles the bringing up of the modification window while changing the states
+     * of the program to the addition state.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        idNumber.setCellValueFactory(new PropertyValueFactory<>("IdNumber"));
-        name.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        age.setCellValueFactory(new PropertyValueFactory<>("Age"));
-        dateEmployed.setCellValueFactory(new PropertyValueFactory<>("DateEmployed"));
-        basicClearance.setCellValueFactory(new PropertyValueFactory<>("BasicClearance"));
-        topSecretClearance.setCellValueFactory(new PropertyValueFactory<>("TopSecretClearance"));
-        nonScreener.setCellValueFactory(new PropertyValueFactory<>("NonScreener"));
-        handWander.setCellValueFactory(new PropertyValueFactory<>("HandWander"));
-        fullScreener.setCellValueFactory(new PropertyValueFactory<>("FullScreener"));
-        location.setCellValueFactory(new PropertyValueFactory<>("Location"));
-
-        this.load();
-    }
-
-    /**
-     * Getter for the selected guard
-     * @return the selected guard
-     */
-    public GuardModel getSelectedGuard() {
-        return this.selectedGuard;
-    }
-
-    /**
-     * Sets the selectedGuard variable to the passed in guard
-     * @param selectedGuard the passed in guard
-     */
-    public void setSelectedGuard(GuardModel selectedGuard) {
-        this.selectedGuard = selectedGuard;
-    }
-
     public void addGuard() {
         secondaryController.changeState();
         if (secondaryStage.isShowing()) {
@@ -163,16 +104,54 @@ public class employeeDatabaseController implements Initializable {
     }
 
     /**
-     * Takes a file and returns a guardModel from the file
-     * @param file the passed in properties file containing the guard data
-     * @return the guardModel from the file
+     * The opener for the modify method to change data
      */
-    public GuardModel parseGuardModel(File file) {
-        GuardModel g = null;
+    public void modify() {
+        if (!secondaryController.getState().equals("modify")) {
+            secondaryController.changeState();
+        }
+        if (secondaryStage.isShowing()) {
+            secondaryStage.hide();
+        } else {
+            secondaryStage.show();
+            secondaryController.load(this.selectedGuard);
+        }
+    }
+
+    /**
+     * This method will take the selected guard, using the parseGuardFile method to find the file
+     * and delete it.
+     */
+    public void remove() {
+        File guardFile = parseGuardFile(this.selectedGuard.getIdNumber());
         try {
+            Files.delete(guardFile.toPath());
+            this.selectedGuard = null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.load();
+    }
+
+    /**
+     * This method hides the Modifier stage
+     */
+    public void hideModifier() {
+        secondaryStage.hide();
+    }
+
+    /**
+     * This method takes in a file, reads the file, and parses the guard from the file.
+     * @param guardFile - A passed in file
+     * @return          - The parsed guard from the file
+     */
+    public GuardModel parseGuardModel(File guardFile) {
+        GuardModel guard = null;
+        try (FileInputStream in = new FileInputStream(guardFile)){
             Properties guardProps = new Properties();
-            guardProps.load(new FileInputStream(file));
-            g = new GuardModel(Integer.parseInt(guardProps.getProperty("idNumber")),
+            guardProps.load(in);
+            guard = new GuardModel(
+                    Integer.parseInt(guardProps.getProperty("idNumber")),
                     guardProps.getProperty("name"),
                     Integer.parseInt(guardProps.getProperty("age")),
                     guardProps.getProperty("dateEmployed"),
@@ -183,97 +162,136 @@ public class employeeDatabaseController implements Initializable {
                     Boolean.valueOf(guardProps.getProperty("fullScreener")),
                     guardProps.getProperty("location")
             );
-        } catch (FileNotFoundException e) {
-
         } catch (IOException e) {
-
+            this.createAlert("Error Reading File", "Error reading file from " + guardFile);
         }
-        return g;
+        return guard;
     }
 
     /**
-     * The opener for the modify method to change data
+     * This helper method takes in an idNumber and parses the list of files to return the file of
+     * the guard with the selected idNumber.
+     * @param idNumber  - The passed in ID Number of the guard
+     * @return          - The file of the guar with the specified ID Number
      */
-    public void modify() {
-        if (!secondaryController.getState().equals("modify")) {
-            secondaryController.changeState();
-            if (secondaryStage.isShowing()) {
-                secondaryStage.hide();
-            } else {
-                secondaryStage.show();
-                secondaryController.load(this.selectedGuard);
-            }
-        } else {
-            if (secondaryStage.isShowing()) {
-                secondaryStage.hide();
-            } else {
-                secondaryStage.show();
-                secondaryController.load(this.selectedGuard);
-            }
-        }
-
-    }
-
-    /**
-     * Removes and Deletes the selected file
-     */
-    public void remove() {
+    public File parseGuardFile(int idNumber) {
         File file = new File("Data/Guards");
         File[] dir = file.listFiles();
-        try {
-            if (dir != null) {
-                for (File guardFile : dir) {
-                    Properties guardProps = new Properties();
-                    try (FileInputStream in = new FileInputStream(guardFile)) {
-                        guardProps.load(in);
-                    }
-                    if (Integer.parseInt(guardProps.getProperty("idNumber")) == this.selectedGuard.getIdNumber()) {
-                        file = guardFile;
-                    }
+        try (FileInputStream in = new FileInputStream(file)) {
+            for (File guardFile : dir) {
+                Properties guardProps = new Properties();
+                guardProps.load(in);
+                if (Integer.parseInt(guardProps.getProperty("idNumber")) == idNumber) {
+                    file = guardFile;
                 }
             }
+        } catch (IOException e) {
 
-        } catch (FileNotFoundException e) {
-            System.out.println("Error1");
-            // TODO
-        } catch (IOException e) {
-            System.out.println("Error");
-            // TODO
         }
-        try {
-            Files.delete(file.toPath());
-            this.selectedGuard = null;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return file;
+    }
+
+    /**
+     * Initializes the Cell Values for the table and sets the data of the table.
+     * @param url Defualt passed in URL
+     * @param resourceBundle passed in resourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        guardIdNumberCol.setCellValueFactory(new PropertyValueFactory<>("IdNumber"));
+        guardNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        guardAgeCol.setCellValueFactory(new PropertyValueFactory<>("Age"));
+        guardDateEmployedCol.setCellValueFactory(new PropertyValueFactory<>("DateEmployed"));
+        guardBasicClearanceCol.setCellValueFactory(new PropertyValueFactory<>("BasicClearance"));
+        guardTopSecretClearanceCol.setCellValueFactory(new PropertyValueFactory<>("TopSecretClearance"));
+        guardNonScreenerCol.setCellValueFactory(new PropertyValueFactory<>("NonScreener"));
+        guardHandWanderCol.setCellValueFactory(new PropertyValueFactory<>("HandWander"));
+        guardFullScreenerCol.setCellValueFactory(new PropertyValueFactory<>("FullScreener"));
+        guardLocationCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
+
         this.load();
     }
 
+    // Getters and Setters
+
+    // Class specific getters and setters
+
+    // Secondary Stage / Modifier getters and setters
     /**
-     * Sets the main pane of the program
-     * @param root the passed in pane
+     * This method will set the main pane of the program.
+     * @param root  - The passed in Pane from the other file.
      */
     public void setMainGrid(Pane root) {
         this.mainPane = root;
     }
 
     /**
-     * Setter of the secondary Stage
-     * @param secondaryStage the passed in stage
+     * This method sets the stage of the modifier fxml file.
+     * @param secondaryStage    - The passed in stage from the other file.
      */
     public void setOtherStage(Stage secondaryStage) {
         this.secondaryStage = secondaryStage;
     }
 
     /**
-     * Setter of the other controller
-     * @param employeeModificationController the passed in controller
+     * This method sets the other controller from the other file.
+     * @param employeeModificationController    - The passed in controller from the other file.
      */
     public void setOtherController(employeeModificationController employeeModificationController) {
         this.secondaryController = employeeModificationController;
     }
 
-    public void hideModifier() {
-        secondaryStage.hide();
+    /**
+     * This method returns the current selected guard.
+     * @return The selected guard.
+     */
+    public GuardModel getSelectedGuard() {
+        return this.selectedGuard;
+    }
+
+    /**
+     * This method changes the selected guard to the one passed in.
+     * @param selectedGuard - The selected guard.
+     */
+    public void setSelectedGuard(GuardModel selectedGuard) {
+        this.selectedGuard = selectedGuard;
+    }
+
+
+    // Additional Methods
+
+    /**
+     * This method creates an alert that only stays open for a specified amount of time with a
+     * given title, content, and a time.
+     * @param title     - A passed in Title
+     * @param content   - The passed in content text
+     * @param time      - The passed in time spent open.
+     */
+    public void createTimedAlert(String title, String content, Double time) {
+        // Creates an alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.setHeaderText(null);
+        alert.show();
+
+        // Specifies the timeline in which the alert will stay open
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.seconds(time),
+                ae -> alert.hide()));
+        timeline.play();
+    }
+
+    /**
+     * This method creates an alert with a specified title and content.
+     * @param title     - A passed in title
+     * @param content   - A passed in content text
+     */
+    public void createAlert(String title, String content) {
+        // Creates an alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

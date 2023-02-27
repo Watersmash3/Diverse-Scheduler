@@ -14,48 +14,27 @@ import java.util.Properties;
  * The employee modification controller
  */
 public class employeeModificationController {
-    @FXML
-    private Label guardID;
-    @FXML
-    private TextField guardIDField;
-    @FXML
-    private Label guardName;
-    @FXML
-    private TextField guardNameField;
-    @FXML
-    private Label guardAge;
-    @FXML
-    private TextField guardAgeField;
-    @FXML
-    private Label guardStartDate;
-    @FXML
-    private TextField guardStartDateField;
-    @FXML
-    private Label guardBasic;
-    @FXML
-    private CheckBox guardBasicField;
-    @FXML
-    private Label guardTopSecret;
-    @FXML
-    private CheckBox guardTopSecretField;
-    @FXML
-    private Label guardNonScreener;
-    @FXML
-    private CheckBox guardNonScreenerField;
-    @FXML
-    private Label guardHandWander;
-    @FXML
-    private CheckBox guardHandWanderField;
-    @FXML
-    private Label guardFullScreener;
-    @FXML
-    private CheckBox guardFullScreenerField;
-    @FXML
-    private Label guardLocation;
-    @FXML
-    private TextField guardLocationField;
-    @FXML
-    private Button applyButton;
+    @FXML private Label guardID;
+    @FXML private TextField guardIDField;
+    @FXML private Label guardName;
+    @FXML private TextField guardNameField;
+    @FXML private Label guardAge;
+    @FXML private TextField guardAgeField;
+    @FXML private Label guardStartDate;
+    @FXML private TextField guardStartDateField;
+    @FXML private Label guardBasic;
+    @FXML private CheckBox guardBasicField;
+    @FXML private Label guardTopSecret;
+    @FXML private CheckBox guardTopSecretField;
+    @FXML private Label guardNonScreener;
+    @FXML private CheckBox guardNonScreenerField;
+    @FXML private Label guardHandWander;
+    @FXML private CheckBox guardHandWanderField;
+    @FXML private Label guardFullScreener;
+    @FXML private CheckBox guardFullScreenerField;
+    @FXML private Label guardLocation;
+    @FXML private TextField guardLocationField;
+    @FXML private Button applyButton;
 
     private Stage primaryStage;
     private employeeDatabaseController primaryController;

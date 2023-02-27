@@ -9,26 +9,26 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="998.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="employeeDatabase.employeeDatabaseController">
    <children>
-      <TableView fx:id="tableData" onMouseClicked="#select" prefHeight="556.0" prefWidth="836.0">
+      <TableView fx:id="guardTableData" onMouseClicked="#select" prefHeight="556.0" prefWidth="836.0">
          <columns>
-            <TableColumn fx:id="idNumber" prefWidth="61.0" text="ID" />
-            <TableColumn fx:id="name" prefWidth="89.0" text="Name" />
-            <TableColumn fx:id="age" prefWidth="44.0" text="Age" />
-            <TableColumn fx:id="dateEmployed" prefWidth="91.0" text="Date Employed" />
-            <TableColumn fx:id="basicClearance" prefWidth="77.0" text="Basic" />
-            <TableColumn fx:id="topSecretClearance" prefWidth="77.0" text="Top Secret" />
-            <TableColumn fx:id="nonScreener" prefWidth="84.0" text="Non-Screener" />
-            <TableColumn fx:id="handWander" prefWidth="92.0" text="Hand-Wanders" />
-            <TableColumn fx:id="fullScreener" prefWidth="87.0" text="Full-Screeners" />
-            <TableColumn fx:id="location" prefWidth="133.0" text="Location" />
+            <TableColumn fx:id="guardIdNumberCol" prefWidth="61.0" text="ID" />
+            <TableColumn fx:id="guardNameCol" prefWidth="89.0" text="Name" />
+            <TableColumn fx:id="guardAgeCol" prefWidth="44.0" text="Age" />
+            <TableColumn fx:id="guardDateEmployedCol" prefWidth="91.0" text="Date Employed" />
+            <TableColumn fx:id="guardBasicClearanceCol" prefWidth="77.0" text="Basic" />
+            <TableColumn fx:id="guardTopSecretClearanceCol" prefWidth="77.0" text="Top Secret" />
+            <TableColumn fx:id="guardNonScreenerCol" prefWidth="84.0" text="Non-Screener" />
+            <TableColumn fx:id="guardHandWanderCol" prefWidth="92.0" text="Hand-Wanders" />
+            <TableColumn fx:id="guardFullScreenerCol" prefWidth="87.0" text="Full-Screeners" />
+            <TableColumn fx:id="guardLocationCol" prefWidth="133.0" text="Location" />
          </columns>
       </TableView>
-      <Label fx:id="idLabel" layoutX="836.0" layoutY="31.0" prefHeight="34.0" prefWidth="162.0" text="ID: ######">
+      <Label fx:id="selectedGuardIdLabel" layoutX="836.0" layoutY="31.0" prefHeight="34.0" prefWidth="162.0" text="ID: ######">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <Label fx:id="nameLabel" layoutX="836.0" layoutY="65.0" prefHeight="34.0" prefWidth="162.0" text="Name: #### ####" />
+      <Label fx:id="selectedGuardNameLabel" layoutX="836.0" layoutY="65.0" prefHeight="34.0" prefWidth="162.0" text="Name: #### ####" />
       <Button layoutX="836.0" layoutY="390.0" mnemonicParsing="false" onAction="#addGuard" prefHeight="49.0" prefWidth="162.0" text="Add">
          <font>
             <Font size="23.0" />
