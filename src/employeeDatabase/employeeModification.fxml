@@ -11,11 +11,11 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="employeeDatabase.employeeModificationController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="1201.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="employeeDatabase.employeeModificationController">
    <children>
-      <HBox layoutY="-1.0" prefHeight="94.0" prefWidth="974.0">
+      <HBox layoutY="-1.0" prefHeight="94.0" prefWidth="1201.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="76.0">
                <children>
                   <Label text="ID" />
                   <Label fx:id="guardID" text="######">
@@ -30,7 +30,7 @@
                   </TextField>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="101.0">
                <children>
                   <Label text="Name" />
                   <Label fx:id="guardName" text="######">
@@ -45,7 +45,7 @@
                   </TextField>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="57.0">
                <children>
                   <Label text="Age" />
                   <Label fx:id="guardAge" text="######">
@@ -60,22 +60,52 @@
                   </TextField>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="79.0">
                <children>
-                  <Label text="Start Date" />
-                  <Label fx:id="guardStartDate" text="######">
+                  <Label text="Last Four" />
+                  <Label fx:id="guardLastFour" text="####">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="guardStartDateField" prefHeight="25.0" prefWidth="81.0">
+                  <TextField fx:id="guardLastFourField" prefHeight="25.0" prefWidth="81.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </TextField>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="79.0">
+               <children>
+                  <Label text="Start Date" />
+                  <Label fx:id="guardDOE" text="######">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="guardDOEField" prefHeight="25.0" prefWidth="81.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="79.0">
+               <children>
+                  <Label text="Date of Birth" />
+                  <Label fx:id="guardDOB" text="######">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="guardDOBField" prefHeight="25.0" prefWidth="81.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="70.0">
                <children>
                   <Label text="Basic" />
                   <Label fx:id="guardBasic" text="######">
@@ -90,7 +120,7 @@
                   </CheckBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="71.0">
                <children>
                   <Label text="Top Secret" />
                   <Label fx:id="guardTopSecret" text="######">
@@ -105,7 +135,7 @@
                   </CheckBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="99.0">
                <children>
                   <Label text="NonScreener" />
                   <Label fx:id="guardNonScreener" text="######">
@@ -120,7 +150,7 @@
                   </CheckBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="98.0">
                <children>
                   <Label text="Hand Wander" />
                   <Label fx:id="guardHandWander" text="######">
@@ -135,7 +165,7 @@
                   </CheckBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="89.0">
                <children>
                   <Label text="Full Screener" />
                   <Label fx:id="guardFullScreener" text="######">
@@ -150,15 +180,45 @@
                   </CheckBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="182.0">
                <children>
-                  <Label text="Location" />
-                  <Label fx:id="guardLocation" text="######">
+                  <Label text="Address" />
+                  <Label fx:id="guardAddress" text="######">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="guardLocationField" prefHeight="25.0" prefWidth="81.0">
+                  <TextField fx:id="guardAddressField" prefHeight="25.0" prefWidth="81.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="105.0">
+               <children>
+                  <Label text="City" />
+                  <Label fx:id="guardCity" text="######">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="guardCityField" prefHeight="25.0" prefWidth="81.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="94.0" prefWidth="74.0">
+               <children>
+                  <Label text="Zip" />
+                  <Label fx:id="guardZip" text="######">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="guardZipField" prefHeight="25.0" prefWidth="81.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -167,12 +227,12 @@
             </VBox>
          </children>
       </HBox>
-      <Button cancelButton="true" layoutX="863.0" layoutY="85.0" mnemonicParsing="false" onAction="#cancel" prefHeight="35.0" prefWidth="97.0" text="Cancel">
+      <Button cancelButton="true" layoutX="1096.0" layoutY="85.0" mnemonicParsing="false" onAction="#cancel" prefHeight="35.0" prefWidth="97.0" text="Cancel">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="applyButton" layoutX="751.0" layoutY="85.0" mnemonicParsing="false" onAction="#apply" prefHeight="35.0" prefWidth="97.0" text="Apply">
+      <Button fx:id="applyButton" layoutX="984.0" layoutY="85.0" mnemonicParsing="false" onAction="#apply" prefHeight="35.0" prefWidth="97.0" text="Apply">
          <font>
             <Font size="18.0" />
          </font>

@@ -2,7 +2,6 @@ package employeeDatabase;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +14,6 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -30,17 +28,24 @@ public class employeeDatabaseController implements Initializable {
     // FXML Elements
     @FXML private TableView<GuardModel> guardTableData;
     @FXML private TableColumn<GuardModel, Integer> guardIdNumberCol;
+    @FXML private TableColumn<GuardModel, Integer> guardSeniorityCol;
     @FXML private TableColumn<GuardModel, String> guardNameCol;
     @FXML private TableColumn<GuardModel, Integer> guardAgeCol;
-    @FXML private TableColumn<GuardModel, String> guardDateEmployedCol;
+    @FXML private TableColumn<GuardModel, Integer> guardLastFourCol;
+    @FXML private TableColumn<GuardModel, String> guardDOBCol;
+    @FXML private TableColumn<GuardModel, String> guardDOECol;
     @FXML private TableColumn<GuardModel, Boolean> guardBasicClearanceCol;
     @FXML private TableColumn<GuardModel, Boolean> guardTopSecretClearanceCol;
     @FXML private TableColumn<GuardModel, Boolean> guardNonScreenerCol;
     @FXML private TableColumn<GuardModel, Boolean> guardHandWanderCol;
     @FXML private TableColumn<GuardModel, Boolean> guardFullScreenerCol;
-    @FXML private TableColumn<GuardModel, String> guardLocationCol;
+    @FXML private TableColumn<GuardModel, String> guardAddressCol;
+    @FXML private TableColumn<GuardModel, String> guardCityCol;
+    @FXML private TableColumn<GuardModel, Integer> guardZipCol;
     @FXML private Label selectedGuardIdLabel;
     @FXML private Label selectedGuardNameLabel;
+    @FXML private Label selectedGuardDOBLabel;
+    @FXML private Label selectedGuardDOELabel;
 
     // Secondary Stage / Modifier Elements
     private Stage secondaryStage;
@@ -58,8 +63,10 @@ public class employeeDatabaseController implements Initializable {
     public void select() {
         GuardModel currentGuard = guardTableData.getSelectionModel().getSelectedItem();
         if (currentGuard != null) {
-            selectedGuardIdLabel.setText("Guard ID: " + currentGuard.getIdNumber());
-            selectedGuardNameLabel.setText("Guard Name: " + currentGuard.getName());
+            selectedGuardIdLabel.setText("ID: " + selectedGuard.getIdNumber());
+            selectedGuardNameLabel.setText("Name: " + selectedGuard.getName());
+            selectedGuardDOBLabel.setText("DOB: " + selectedGuard.getDateOfBirth());
+            selectedGuardDOELabel.setText("DOE: " + selectedGuard.getDateOfEmployment());
             this.selectedGuard = currentGuard;
         } else {
             this.createTimedAlert("Invalid Selection", "Please select a valid entry", 3.0);
@@ -83,6 +90,8 @@ public class employeeDatabaseController implements Initializable {
                GuardModel selectedGuard = guardModels.get(0);
                selectedGuardIdLabel.setText("ID: " + selectedGuard.getIdNumber());
                selectedGuardNameLabel.setText("Name: " + selectedGuard.getName());
+               selectedGuardDOBLabel.setText("DOB: " + selectedGuard.getDateOfBirth());
+               selectedGuardDOELabel.setText("DOE: " + selectedGuard.getDateOfEmployment());
            }
            guardTableData.setItems(guardModels);
            selectedGuard = guardModels.get(0);
@@ -152,15 +161,20 @@ public class employeeDatabaseController implements Initializable {
             guardProps.load(in);
             guard = new GuardModel(
                     Integer.parseInt(guardProps.getProperty("idNumber")),
+                    Integer.parseInt(guardProps.getProperty("seniority")),
                     guardProps.getProperty("name"),
                     Integer.parseInt(guardProps.getProperty("age")),
-                    guardProps.getProperty("dateEmployed"),
+                    Integer.parseInt(guardProps.getProperty("lastFour")),
+                    guardProps.getProperty("dateOfBirth"),
+                    guardProps.getProperty("dateOfEmployment"),
                     Boolean.valueOf(guardProps.getProperty("basicClearance")),
                     Boolean.valueOf(guardProps.getProperty("topSecretClearance")),
                     Boolean.valueOf(guardProps.getProperty("nonScreener")),
                     Boolean.valueOf(guardProps.getProperty("handWander")),
                     Boolean.valueOf(guardProps.getProperty("fullScreener")),
-                    guardProps.getProperty("location")
+                    guardProps.getProperty("address"),
+                    guardProps.getProperty("city"),
+                    Integer.parseInt(guardProps.getProperty("zip"))
             );
         } catch (IOException e) {
             this.createAlert("Error Reading File", "Error reading file from " + guardFile);
@@ -177,16 +191,16 @@ public class employeeDatabaseController implements Initializable {
     public File parseGuardFile(int idNumber) {
         File file = new File("Data/Guards");
         File[] dir = file.listFiles();
-        try (FileInputStream in = new FileInputStream(file)) {
-            for (File guardFile : dir) {
+        for (File guardFile : dir) {
+            try (FileInputStream in = new FileInputStream(guardFile)) {
                 Properties guardProps = new Properties();
                 guardProps.load(in);
                 if (Integer.parseInt(guardProps.getProperty("idNumber")) == idNumber) {
                     file = guardFile;
                 }
-            }
-        } catch (IOException e) {
+            } catch (IOException e) {
 
+            }
         }
         return file;
     }
@@ -199,16 +213,20 @@ public class employeeDatabaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         guardIdNumberCol.setCellValueFactory(new PropertyValueFactory<>("IdNumber"));
+        guardSeniorityCol.setCellValueFactory(new PropertyValueFactory<>("Seniority"));
         guardNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
         guardAgeCol.setCellValueFactory(new PropertyValueFactory<>("Age"));
-        guardDateEmployedCol.setCellValueFactory(new PropertyValueFactory<>("DateEmployed"));
+        guardLastFourCol.setCellValueFactory(new PropertyValueFactory<>("LastFour"));
+        guardDOBCol.setCellValueFactory(new PropertyValueFactory<>("DateOfBirth"));
+        guardDOECol.setCellValueFactory(new PropertyValueFactory<>("DateOfEmployment"));
         guardBasicClearanceCol.setCellValueFactory(new PropertyValueFactory<>("BasicClearance"));
         guardTopSecretClearanceCol.setCellValueFactory(new PropertyValueFactory<>("TopSecretClearance"));
         guardNonScreenerCol.setCellValueFactory(new PropertyValueFactory<>("NonScreener"));
         guardHandWanderCol.setCellValueFactory(new PropertyValueFactory<>("HandWander"));
         guardFullScreenerCol.setCellValueFactory(new PropertyValueFactory<>("FullScreener"));
-        guardLocationCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
-
+        guardAddressCol.setCellValueFactory(new PropertyValueFactory<>("Address"));
+        guardCityCol.setCellValueFactory(new PropertyValueFactory<>("City"));
+        guardZipCol.setCellValueFactory(new PropertyValueFactory<>("Zip"));
         this.load();
     }
 

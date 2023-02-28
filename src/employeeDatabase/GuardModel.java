@@ -10,45 +10,59 @@ import javafx.beans.property.SimpleStringProperty;
 public class GuardModel {
 
     private SimpleIntegerProperty idNumber;
+    private SimpleIntegerProperty seniority;
     private SimpleStringProperty name;
     private SimpleIntegerProperty age;
-    private SimpleStringProperty dateEmployed;
+    private SimpleIntegerProperty lastFour;
+    private SimpleStringProperty dateOfBirth;
+    private SimpleStringProperty dateOfEmployment;
     private SimpleBooleanProperty basicClearance;
     private SimpleBooleanProperty topSecretClearance;
     private SimpleBooleanProperty nonScreener;
     private SimpleBooleanProperty handWander;
     private SimpleBooleanProperty fullScreener;
-    private SimpleStringProperty location;
+    private SimpleStringProperty address;
+    private SimpleStringProperty city;
+    private SimpleIntegerProperty zip;
 
     /**
      * The constructor for the guard model.
      * @param idNumber            - The guards ID number
+     * @param seniority           - The guards seniority compared to other guards
      * @param name                - The guards name
      * @param age                 - The guards age
+     * @param lastFour            - The guards last four of their Social Security Number
+     * @param dateOfBirth         - The guards Date of Birth
      * @param dateEmployed        - The guards date of employment
      * @param basicClearance      - Whether or not the guard has basic clearance
      * @param topSecretClearance  - Whether or not the guard has Top Secret clearance
      * @param nonScreener         - Whether or not the guard has screening certification
      * @param handWander          - Whether or not the guard has hand wanding certification
      * @param fullScreener        - Whether or not the guard has full screening certification
-     * @param location            - The guards location
+     * @param address             - The guards address
+     * @param city                - The guards City
+     * @param zip                 - The guards zip code
      */
-    public GuardModel(Integer idNumber, String name,
-                      Integer age, String dateEmployed,
-                      Boolean basicClearance, Boolean
-                              topSecretClearance, Boolean nonScreener,
-                      Boolean handWander, Boolean fullScreener,
-                      String location) {
+    public GuardModel(Integer idNumber,Integer seniority, String name, Integer age,
+                      Integer lastFour, String dateOfBirth, String dateOfEmployment,
+                      Boolean basicClearance, Boolean topSecretClearance,
+                      Boolean nonScreener, Boolean handWander, Boolean fullScreener,
+                      String address, String city, Integer zip) {
         this.idNumber = new SimpleIntegerProperty(idNumber);
+        this.seniority = new SimpleIntegerProperty(seniority);
         this.name = new SimpleStringProperty(name);
         this.age = new SimpleIntegerProperty(age);
-        this.dateEmployed = new SimpleStringProperty(dateEmployed);
+        this.lastFour = new SimpleIntegerProperty(lastFour);
+        this.dateOfBirth = new SimpleStringProperty(dateOfBirth);
+        this.dateOfEmployment = new SimpleStringProperty(dateOfEmployment);
         this.basicClearance = new SimpleBooleanProperty(basicClearance);
         this.topSecretClearance = new SimpleBooleanProperty(topSecretClearance);
         this.nonScreener = new SimpleBooleanProperty(nonScreener);
         this.handWander = new SimpleBooleanProperty(handWander);
         this.fullScreener = new SimpleBooleanProperty(fullScreener);
-        this.location = new SimpleStringProperty(location);
+        this.address = new SimpleStringProperty(address);
+        this.city = new SimpleStringProperty(city);
+        this.zip = new SimpleIntegerProperty(zip);
     }
 
     /**
@@ -97,22 +111,6 @@ public class GuardModel {
      */
     public void setAge(int age) {
         this.age.set(age);
-    }
-
-    /**
-     * Getter for the guards employment date
-     * @return the guards employment date
-     */
-    public String getDateEmployed() {
-        return dateEmployed.get();
-    }
-
-    /**
-     * Setter for the guards date of employment
-     * @param dateEmployed the guards date of employment
-     */
-    public void setDateEmployed(String dateEmployed) {
-        this.dateEmployed.set(dateEmployed);
     }
 
     /**
@@ -196,18 +194,114 @@ public class GuardModel {
     }
 
     /**
-     * Getter for the guards location
-     * @return the guards location
+     * Getter for the seniority of the guard
+     * @return the guards seniority
      */
-    public String getLocation() {
-        return location.get();
+    public int getSeniority() {
+        return seniority.get();
     }
 
     /**
-     * Setter for the guards location
-     * @param location the guards location
+     * Setter for the guards seniority
+     * @param seniority the guards seniority
      */
-    public void setLocation(String location) {
-        this.location.set(location);
+    public void setSeniority(int seniority) {
+        this.seniority.set(seniority);
+    }
+
+    /**
+     * Getter for the guards last four of their social security number
+     * @return the guards last four of their social security number
+     */
+    public int getLastFour() {
+        return lastFour.get();
+    }
+
+    /**
+     * Setter for the guards last four
+     * @param lastFour the last four
+     */
+    public void setLastFour(int lastFour) {
+        this.lastFour.set(lastFour);
+    }
+
+    /**
+     * Getter for the guards date of birth
+     * @return the guards date of birth
+     */
+    public String getDateOfBirth() {
+        return dateOfBirth.get();
+    }
+
+    /**
+     * Setter for the guards date of birth
+     * @param dateOfBirth the guards date of birth
+     */
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth.set(dateOfBirth);
+    }
+
+    /**
+     * Getter for the guards date of employment
+     * @return the guards date of employment
+     */
+    public String getDateOfEmployment() {
+        return dateOfEmployment.get();
+    }
+
+    /**
+     * Setter for the guards date of employment
+     * @param dateOfEmployment the guards date of employment
+     */
+    public void setDateOfEmployment(String dateOfEmployment) {
+        this.dateOfEmployment.set(dateOfEmployment);
+    }
+
+    /**
+     * Getter for the guards address
+     * @return the guards address
+     */
+    public String getAddress() {
+        return address.get();
+    }
+
+    /**
+     * Setter for the guards address
+     * @param address the guards address
+     */
+    public void setAddress(String address) {
+        this.address.set(address);
+    }
+
+    /**
+     * Getter for the guards city
+     * @return the guards city
+     */
+    public String getCity() {
+        return city.get();
+    }
+
+    /**
+     * Setter for the guards city
+     * @param city the guards city
+     */
+    public void setCity(String city) {
+        this.city.set(city);
+    }
+
+    /**
+     * Getter for the guards zip code
+     * @return the guards zip code
+     */
+    public int getZip() {
+        return zip.get();
+    }
+
+    /**
+     * Setter for the guards zip code
+     * @param zip the guards zip code
+     */
+    public void setZip(int zip) {
+        this.zip.set(zip);
     }
 }

@@ -23,10 +23,12 @@ This is an app designed to fullfill the scheduling needs of companies and people
   + Preferred working shift
   + Number of days spent working per week
 + Other Information
-  + Place of Residence
+  + Address, City, and Zip Code
   + Date Employed
   + Name
   + Age
+  + Date of Birth
+  + Last Four of Social Security
 
 ## Locations
 + Hours of operation
