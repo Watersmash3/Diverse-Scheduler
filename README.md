@@ -16,6 +16,11 @@ This is an app designed to fullfill the scheduling needs of companies and people
       + MEPS & Immigration (Full-Screeners)
     + Top Secret
       + FBI (Full-Screener)
+  + Full Time vs Part Time
+    + Full Time
+      + Must work at least 36 hours / week
+    + Part Time
+      + No Limit or requirement on number of hours worked / week
 + Soft Limits
   + Time spent driving
     + Anything over 50 miles is paid
@@ -37,3 +42,5 @@ This is an app designed to fullfill the scheduling needs of companies and people
   + Certification requirements
   + Start Time
   + End Time
++ Assignable Guards
++ 

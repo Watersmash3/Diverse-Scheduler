@@ -10,7 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 public class GuardModel {
 
     private SimpleIntegerProperty idNumber;
-    private SimpleIntegerProperty seniority;
     private SimpleStringProperty name;
     private SimpleIntegerProperty age;
     private SimpleIntegerProperty lastFour;
@@ -28,7 +27,6 @@ public class GuardModel {
     /**
      * The constructor for the guard model.
      * @param idNumber            - The guards ID number
-     * @param seniority           - The guards seniority compared to other guards
      * @param name                - The guards name
      * @param age                 - The guards age
      * @param lastFour            - The guards last four of their Social Security Number
@@ -43,13 +41,12 @@ public class GuardModel {
      * @param city                - The guards City
      * @param zip                 - The guards zip code
      */
-    public GuardModel(Integer idNumber,Integer seniority, String name, Integer age,
+    public GuardModel(Integer idNumber, String name, Integer age,
                       Integer lastFour, String dateOfBirth, String dateOfEmployment,
                       Boolean basicClearance, Boolean topSecretClearance,
                       Boolean nonScreener, Boolean handWander, Boolean fullScreener,
                       String address, String city, Integer zip) {
         this.idNumber = new SimpleIntegerProperty(idNumber);
-        this.seniority = new SimpleIntegerProperty(seniority);
         this.name = new SimpleStringProperty(name);
         this.age = new SimpleIntegerProperty(age);
         this.lastFour = new SimpleIntegerProperty(lastFour);
@@ -191,22 +188,6 @@ public class GuardModel {
      */
     public void setFullScreener(boolean fullScreener) {
         this.fullScreener.set(fullScreener);
-    }
-
-    /**
-     * Getter for the seniority of the guard
-     * @return the guards seniority
-     */
-    public int getSeniority() {
-        return seniority.get();
-    }
-
-    /**
-     * Setter for the guards seniority
-     * @param seniority the guards seniority
-     */
-    public void setSeniority(int seniority) {
-        this.seniority.set(seniority);
     }
 
     /**

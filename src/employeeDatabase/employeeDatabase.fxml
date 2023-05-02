@@ -12,7 +12,6 @@
       <TableView fx:id="guardTableData" onMouseClicked="#select" prefHeight="556.0" prefWidth="1032.0">
          <columns>
             <TableColumn fx:id="guardIdNumberCol" prefWidth="50.0" text="ID" />
-            <TableColumn fx:id="guardSeniorityCol" prefWidth="35.0" text="Snty" />
             <TableColumn fx:id="guardNameCol" prefWidth="125.0" text="Name" />
             <TableColumn fx:id="guardAgeCol" prefWidth="35.0" text="Age" />
             <TableColumn fx:id="guardLastFourCol" prefWidth="42.0" text="Last 4" />
@@ -23,8 +22,8 @@
             <TableColumn fx:id="guardNonScreenerCol" prefWidth="50.0" text="NScrn" />
             <TableColumn fx:id="guardHandWanderCol" prefWidth="50.0" text="HWand" />
             <TableColumn fx:id="guardFullScreenerCol" prefWidth="50.0" text="FScrn" />
-            <TableColumn fx:id="guardAddressCol" prefWidth="175.0" text="Address" />
-            <TableColumn fx:id="guardCityCol" prefWidth="120.0" text="City" />
+            <TableColumn fx:id="guardAddressCol" prefWidth="197.0" text="Address" />
+            <TableColumn fx:id="guardCityCol" prefWidth="98.0" text="City" />
             <TableColumn fx:id="guardZipCol" prefWidth="50.0" text="Zip" />
          </columns>
       </TableView>

@@ -1,13 +1,12 @@
 package employeeDatabase;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -43,6 +42,7 @@ public class employeeModificationController {
     @FXML private Label guardZip;
     @FXML private TextField guardZipField;
     @FXML private Button applyButton;
+    private ArrayList<TextField> textFields = new ArrayList<>();
 
     private Stage primaryStage;
     private employeeDatabaseController primaryController;
@@ -79,6 +79,9 @@ public class employeeModificationController {
             file = new File("Data/Guards/" +  str.replaceAll(" ", "_").toLowerCase() + ".properties");
             primaryController.hideModifier();
         }
+        if (this.checkFields() != null) {
+            this.textFieldEmptyError(this.checkFields());
+        }
         try (PrintWriter out = new PrintWriter(file)) {
             out.print("idNumber=" + this.guardIDField.getText() + "\n");
             out.print("seniority=" + 0 + "\n");
@@ -101,6 +104,23 @@ public class employeeModificationController {
         this.selectedGuard = null;
         primaryController.load();
         this.load(primaryController.parseGuardModel(file));
+    }
+
+    private void textFieldEmptyError(TextField textField) {
+        // Creates an alert
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("One or more fields is empty");
+        alert.setContentText("The textfield " + textField.getId() + " is empty.");
+        alert.showAndWait();
+    }
+
+    private TextField checkFields() {
+        for (TextField text : textFields) {
+            if (Objects.equals(text.getText(), "")) {
+                return text;
+            }
+        }
+        return null;
     }
 
     /**
@@ -143,6 +163,15 @@ public class employeeModificationController {
         guardCityField.setText(guardModel.getCity());
         guardZip.setText(String.valueOf(guardModel.getZip()));
         guardZipField.setText(String.valueOf(guardModel.getZip()));
+        textFields.add(guardIDField);
+        textFields.add(guardNameField);
+        textFields.add(guardAgeField);
+        textFields.add(guardLastFourField);
+        textFields.add(guardDOEField);
+        textFields.add(guardDOBField);
+        textFields.add(guardAddressField);
+        textFields.add(guardCityField);
+        textFields.add(guardZipField);
         this.selectedGuard = guardModel;
     }
 

@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import saxtonp.SaxtonAlerts;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +29,6 @@ public class employeeDatabaseController implements Initializable {
     // FXML Elements
     @FXML private TableView<GuardModel> guardTableData;
     @FXML private TableColumn<GuardModel, Integer> guardIdNumberCol;
-    @FXML private TableColumn<GuardModel, Integer> guardSeniorityCol;
     @FXML private TableColumn<GuardModel, String> guardNameCol;
     @FXML private TableColumn<GuardModel, Integer> guardAgeCol;
     @FXML private TableColumn<GuardModel, Integer> guardLastFourCol;
@@ -51,7 +51,9 @@ public class employeeDatabaseController implements Initializable {
     private Stage secondaryStage;
     private employeeModificationController secondaryController;
     private Pane mainPane;
-
+    private ArrayList<String> datesOfEmployment = new ArrayList<>();
+    private ArrayList<Integer> idNumbers = new ArrayList<>();
+    private ArrayList<GuardModel> guardModels = new ArrayList<>();
     // Instance Variables
     private GuardModel selectedGuard;
 
@@ -69,7 +71,7 @@ public class employeeDatabaseController implements Initializable {
             selectedGuardDOELabel.setText("DOE: " + selectedGuard.getDateOfEmployment());
             this.selectedGuard = currentGuard;
         } else {
-            this.createTimedAlert("Invalid Selection", "Please select a valid entry", 3.0);
+            SaxtonAlerts.createTimedAlert("Invalid Selection", "Please select a valid entry", 3.0);
         }
     }
 
@@ -161,7 +163,6 @@ public class employeeDatabaseController implements Initializable {
             guardProps.load(in);
             guard = new GuardModel(
                     Integer.parseInt(guardProps.getProperty("idNumber")),
-                    Integer.parseInt(guardProps.getProperty("seniority")),
                     guardProps.getProperty("name"),
                     Integer.parseInt(guardProps.getProperty("age")),
                     Integer.parseInt(guardProps.getProperty("lastFour")),
@@ -177,7 +178,7 @@ public class employeeDatabaseController implements Initializable {
                     Integer.parseInt(guardProps.getProperty("zip"))
             );
         } catch (IOException e) {
-            this.createAlert("Error Reading File", "Error reading file from " + guardFile);
+            SaxtonAlerts.createAlert("Error Reading File", "Error reading file from " + guardFile);
         }
         return guard;
     }
@@ -213,7 +214,6 @@ public class employeeDatabaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         guardIdNumberCol.setCellValueFactory(new PropertyValueFactory<>("IdNumber"));
-        guardSeniorityCol.setCellValueFactory(new PropertyValueFactory<>("Seniority"));
         guardNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
         guardAgeCol.setCellValueFactory(new PropertyValueFactory<>("Age"));
         guardLastFourCol.setCellValueFactory(new PropertyValueFactory<>("LastFour"));
@@ -273,43 +273,5 @@ public class employeeDatabaseController implements Initializable {
      */
     public void setSelectedGuard(GuardModel selectedGuard) {
         this.selectedGuard = selectedGuard;
-    }
-
-
-    // Additional Methods
-
-    /**
-     * This method creates an alert that only stays open for a specified amount of time with a
-     * given title, content, and a time.
-     * @param title     - A passed in Title
-     * @param content   - The passed in content text
-     * @param time      - The passed in time spent open.
-     */
-    public void createTimedAlert(String title, String content, Double time) {
-        // Creates an alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.setHeaderText(null);
-        alert.show();
-
-        // Specifies the timeline in which the alert will stay open
-        Timeline timeline = new Timeline(new KeyFrame(
-                Duration.seconds(time),
-                ae -> alert.hide()));
-        timeline.play();
-    }
-
-    /**
-     * This method creates an alert with a specified title and content.
-     * @param title     - A passed in title
-     * @param content   - A passed in content text
-     */
-    public void createAlert(String title, String content) {
-        // Creates an alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 }
