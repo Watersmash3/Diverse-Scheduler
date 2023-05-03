@@ -25,8 +25,6 @@ public class GuardModelNew {
     private SimpleIntegerProperty zip;
     ArrayList<Object> properties = new ArrayList<>();
 
-
-
     public void addPropertiesToList() {
         properties.add(idNumber);
         properties.add(name);
