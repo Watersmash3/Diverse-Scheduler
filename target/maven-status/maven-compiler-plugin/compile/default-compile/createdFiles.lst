@@ -1,2 +1,15 @@
+org\main\Controller.class
+org\main\Request.class
+org\main\datamodel\Location.class
+org\main\statemanagers\ShiftState.class
+org\main\datamodel\Certification.class
 org\main\Main.class
+org\main\statemanagers\UserState.class
+org\main\statemanagers\RequestState.class
+org\main\datamodel\Shift.class
+org\main\statemanagers\CertificationState.class
 org\main\JarRunner.class
+org\main\datamodel\Employee.class
+org\main\statemanagers\LocationState.class
+org\main\Schedule.class
+org\main\UIControl.class
